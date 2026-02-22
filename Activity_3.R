@@ -67,7 +67,7 @@ plot(North$date, North$tempAnom,
      ylab="Temperature Anomaly in Northern Hemisphere(Celcius)",
      yaxt="n")
 axis(2, seq(-2,2, by=1),
-     seq(-2,2, by=1), las=2) #What is las, figure out
+     seq(-2,2, by=1), las=2)
 
 plot(South$date, South$tempAnom,
      type = "b",
@@ -76,4 +76,30 @@ plot(South$date, South$tempAnom,
      ylab="Temperature Anomaly in Southern Hemisphere(Celcius)",
      yaxt="n")
 axis(2, seq(-1,1, by=0.25),
-     seq(-1,1, by=0.25), las=2) #What is las, figure out
+     seq(-1,1, by=0.25), las=2)
+
+## CW PROMPT 2
+NorthASum <- NorthA %>%
+  group_by(Entity) %>%
+  summarise(sumCO2 = sum(CO2))
+## Plot
+ggplot(NorthASum, aes(x=reorder(Entity, -sumCO2),y=sumCO2,fill=Entity, sort)) +
+  geom_col()+
+  theme_classic()+
+  labs(x="Country", y="All-time CO2 Emissions")
+  
+
+### HOMEWORK
+
+##HW1
+
+BRIC <- datCO2 %>%
+  filter(Entity == "Brazil" |
+           Entity == "Russia" |
+           Entity == "India" |
+           Entity == "China")
+
+ggplot(BRIC, aes(x=Year, y=CO2, col=Entity,group=Entity))+
+  geom_line()+
+  labs(title="CO2 Emissions Over Time in BRIC Countries", y="CO2 Emissions")+
+  theme_classic()
