@@ -64,7 +64,7 @@ plot(North$date, North$tempAnom,
      type = "b",
      pch=19,
      xlab="Date (Year/Month/Day)",
-     ylab="Temperature Anomaly in Northern Hemisphere(Celcius)",
+     ylab="Temp Anomaly in Northern Hemisphere (°C)",
      yaxt="n")
 axis(2, seq(-2,2, by=1),
      seq(-2,2, by=1), las=2)
@@ -73,7 +73,7 @@ plot(South$date, South$tempAnom,
      type = "b",
      pch=19,
      xlab="Date (Year/Month/Day)",
-     ylab="Temperature Anomaly in Southern Hemisphere(Celcius)",
+     ylab="Temp Anomaly in Southern Hemisphere(°C)",
      yaxt="n")
 axis(2, seq(-1,1, by=0.25),
      seq(-1,1, by=0.25), las=2)
@@ -103,3 +103,37 @@ ggplot(BRIC, aes(x=Year, y=CO2, col=Entity,group=Entity))+
   geom_line()+
   labs(title="CO2 Emissions Over Time in BRIC Countries", y="CO2 Emissions")+
   theme_classic()
+
+##HW2
+
+CO2Year <- datCO2 %>%
+  group_by(Year) %>%
+  summarise(sumYear = sum(CO2,group=Year))
+
+ggplot(CO2Year, aes(x=Year,y=sumYear))+
+  geom_line(col="royalblue")+
+  labs(title="Global CO2 Emissions by Year",y="CO2 Emissions")+
+  theme_classic()
+
+#Graph 2
+
+TempAnom <- climCH %>%
+  group_by(date) %>%
+  summarise(meanAnom = mean(tempAnom,group=date))
+
+ggplot(TempAnom, aes(x=date,y=meanAnom))+
+  geom_line(col="darkred")+
+  labs(title="Global Temperature Anomaly by Year",x="Date",y="Temperature Anomaly")+
+  theme_classic()
+
+##HW3
+
+Renew <- read.csv("/cloud/project/activity03/renewable-share-energy.csv")
+RenewYear <- Renew %>%
+  group_by(Year) %>%
+  summarise(GlobalRenew = mean(Renewables,group=Year))
+
+ggplot(RenewYear, aes(x=Year,y=GlobalRenew))+
+  geom_line(col="forestgreen")+
+  theme_classic()+
+  labs(title="Global Proportion of Energy from Renewable Sources", y="Proportion of Renewable Energy (%)")
